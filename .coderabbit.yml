@@ -1,0 +1,13 @@
+reviews:
+  enabled: true
+  on_push: true        # Push sonrası otomatik review
+  on_pull_request: false
+  languages: ["typescript", "javascript"]
+
+commits:
+  ai_suggestions: true  # Commit mesajı için öneriler
+  style: conventional  # Conventional commit tarzı (feat, fix, chore)
+
+builds:
+  run_ci: true
+  provider: github_actions  # veya vercel, netlify, circleci vs.
