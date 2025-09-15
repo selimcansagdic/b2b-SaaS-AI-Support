@@ -21,8 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}>
-        
+      <body cz-shortcut-listen="true" className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}>
         <ClerkProvider>
           <Providers>{children}</Providers>
         </ClerkProvider>

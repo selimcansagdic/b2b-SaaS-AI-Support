@@ -8,17 +8,24 @@ export const getMany = query({
   },
 });
 
-export const add = mutation ({
+export const add = mutation({
   args: {},
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       throw new Error("Not authenticated");
     }
-    const userId = await ctx.db.insert("users",{
-      name: "Selim"
-  })
 
-  return userId;
-}
-})
+    const orgId = identity.orgId as string;
+
+    if (!orgId) {
+      throw new Error("Missing organization ");
+    }
+
+    const userId = await ctx.db.insert("users", {
+      name: "Selim",
+    });
+
+    return userId;
+  },
+});
