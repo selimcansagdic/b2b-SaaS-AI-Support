@@ -2,7 +2,7 @@ import { query, mutation } from "./_generated/server";
 
 export const getMany = query({
   args: {},
-  handler: async (ctx) => {
+  handler: async (ctx:any) => {
     const users = await ctx.db.query("users").collect();
     return users;
   },
@@ -10,7 +10,7 @@ export const getMany = query({
 
 export const add = mutation({
   args: {},
-  handler: async (ctx) => {
+  handler: async (ctx:any) => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       throw new Error("Not authenticated");
@@ -21,6 +21,8 @@ export const add = mutation({
     if (!orgId) {
       throw new Error("Missing organization ");
     }
+
+    throw new Error("Tracking Test");
 
     const userId = await ctx.db.insert("users", {
       name: "Selim",

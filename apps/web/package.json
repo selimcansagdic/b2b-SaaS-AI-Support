@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@9.5.0+sha512.1400499e03fa5334117b2496df0b14c33f234a5726f9621376b1348126938a1659b85bc86280385786ed8be90666063e264c7406a46a4897f2269bb232f1165a",
   "scripts": {
-    "dev": "next dev --turbopack --port 3000",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.10",
+    "@sentry/nextjs": "^10.11.0",
     "@workspace/backend": "workspace:*",
     "@workspace/math": "workspace:*",
     "@workspace/ui": "workspace:*",
