@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@workspace/ui/components/form";
 
 import { Button } from "@workspace/ui/components/button";
@@ -8,7 +9,9 @@ import { Input } from "@workspace/ui/components/input";
 import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
 import { useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
-import { Doc } from "@workspace/backend/_generated/dataModel";
+import { Doc, Id } from "@workspace/backend/_generated/dataModel";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { contactSessionIdAtomFamily, organizationIdAtom } from "../../atoms/widget-atoms";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -18,6 +21,9 @@ const formSchema = z.object({
 const organizationId = "123";
 
 export const WidgetAuthScreen = () => {
+  const organizationId = useAtomValue(organizationIdAtom);
+  const setContactSessionId = useSetAtom(contactSessionIdAtomFamily(organizationId || ""));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,7 +58,8 @@ export const WidgetAuthScreen = () => {
       organizationId,
       metadata,
     });
-    console.log({ contactSessionId });
+
+    setContactSessionId(contactSessionId);
   };
 
   return (
@@ -90,7 +97,7 @@ export const WidgetAuthScreen = () => {
             )}
           />
           <Button disabled={form.formState.isSubmitting} size="lg" type="submit">
-            Cantinue
+            Continue
           </Button>
         </form>
       </Form>
