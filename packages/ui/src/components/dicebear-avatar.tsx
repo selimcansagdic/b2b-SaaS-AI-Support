@@ -47,7 +47,7 @@ export const DicebearAvatar = ({ seed, size = 32, className, imageUrl, badgeClas
             transform: "translate(15%, 15%)",
           }}
         >
-          <img alt="Badge " className="h-full w-full object-cover" height={badgeSize} width={badgeSize} />
+          <img alt="Badge" src={badgeImageUrl} className="h-full w-full object-cover" height={badgeSize} width={badgeSize} />
         </div>
       )}
     </div>
