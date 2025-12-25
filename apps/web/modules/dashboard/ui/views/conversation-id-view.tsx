@@ -127,7 +127,7 @@ export const ConversationIdView = ({ conversationId }: { conversationId: Id<"con
 
   if (conversation === undefined || messages.status === "LoadingFirstPage") {
     return <ConversationIdViewLoading />;
-  } 
+  }
 
   return (
     <div className="flex h-full flex-col bg-muted">
