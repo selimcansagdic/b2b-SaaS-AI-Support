@@ -1,0 +1,71 @@
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
+import { createTool } from "@convex-dev/agent";
+import {z} from "zod";
+import { internal } from "../../../_generated/api"; 
+import { supportAgent } from "../agents/supportAgent";
+import rag from "../rag";
+import { describe } from "node:test";
+import { SEARCH_INTERPRETER_PROMPT } from "../constants";
+
+export const search = createTool({
+    description: "Searches the knowledge base for relevant documents based on the user's query.",
+    args: z.object({
+        query: z
+            .string()
+            .describe("The search query to find relevant information.")
+            
+    }),
+    handler: async (ctx, args) => {
+    if (!ctx.threadId) {
+        return "Missing thread ID.";
+        
+    }
+
+    const conversation = await ctx.runQuery(
+        internal.system.conversations.getByThreadId,
+        { threadId: ctx.threadId }
+    )
+
+    if (!conversation) {
+        return "Conversation not found.";
+    }
+
+    const orgId = conversation.organizationId;
+
+    const searchResults = await rag.search(ctx, {
+        namespace:orgId,
+        query: args.query,
+        limit: 5,
+    });
+
+    const contextTex = `Found results in ${searchResults.entries
+        .map((e) => e.title || null)
+        .filter((t) => t !== null)
+        .join(", ")}. Here is context:\n\n${searchResults.text  }`
+
+        const response = await generateText({
+            messages: [
+                {
+                    role: "system",
+                    content: SEARCH_INTERPRETER_PROMPT,
+                },
+                {
+                    role: "user",
+                    content: `"User asked: "${args.query}"\n\nSearch results:${contextTex}`
+                }
+            ],
+            model: google("gemini-2.5-flash-lite"),
+        });
+
+        await supportAgent.saveMessage(ctx, {
+            threadId: ctx.threadId,
+            message: {
+            role: "assistant",
+            content: response.text,
+            },
+        });
+        return response.text;
+    },
+})
+   

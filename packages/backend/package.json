@@ -17,6 +17,7 @@
     "@ai-sdk/google": "^2.0.23",
     "@clerk/backend": "^2.17.0",
     "@convex-dev/agent": "^0.2.10",
+    "@convex-dev/agent-playground": "^0.0.20",
     "@convex-dev/rag": "^0.6.1",
     "ai": "^5.0.72",
     "convex": "^1.26.2",
