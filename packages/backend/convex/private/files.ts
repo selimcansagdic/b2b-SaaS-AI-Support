@@ -22,16 +22,16 @@ export const deleteFile = mutation({
     entryId: vEntryId,
   },
   handler: async (ctx, args) => {
-    const identiy = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (identiy === null) {
+    if (identity === null) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
         message: "Identity not found",
       });
     }
 
-    const orgId = identiy.orgId as string;
+    const orgId = identity.orgId as string;
 
     if (!orgId) {
       throw new ConvexError({
@@ -86,16 +86,16 @@ export const addFile = action({
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const identiy = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (identiy === null) {
+    if (identity === null) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
         message: "Identity not found",
       });
     }
 
-    const orgId = identiy.orgId as string;
+    const orgId = identity.orgId as string;
 
     if (!orgId) {
       throw new ConvexError({
@@ -150,16 +150,16 @@ export const list = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
-    const identiy = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (identiy === null) {
+    if (identity === null) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
         message: "Identity not found",
       });
     }
 
-    const orgId = identiy.orgId as string;
+    const orgId = identity.orgId as string;
 
     if (!orgId) {
       throw new ConvexError({

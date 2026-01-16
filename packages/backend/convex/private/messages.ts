@@ -13,23 +13,7 @@ export const enhanceResponse = action({
     prompt: v.string(),
   },
   handler: async (ctx, args) => {
-    const identiy = await ctx.auth.getUserIdentity();
-
-    if (identiy === null) {
-      throw new ConvexError({
-        code: "UNAUTHORIZED",
-        message: "Identity not found",
-      });
-    }
-
-    const orgId = identiy.orgId as string;
-
-    if (!orgId) {
-      throw new ConvexError({
-        code: "UNAUTHORIZED",
-        message: "Organization not found",
-      });
-    }
+     
 
     const response = await generateText({
       model: google("gemini-2.5-flash-lite"),
@@ -55,16 +39,16 @@ export const create = mutation({
     conversationId: v.id("conversations"),
   },
   handler: async (ctx, args) => {
-    const identiy = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (identiy === null) {
+    if (identity === null) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
         message: "Identity not found",
       });
     }
 
-    const orgId = identiy.orgId as string;
+    const orgId = identity.orgId as string;
 
     if (!orgId) {
       throw new ConvexError({
@@ -103,7 +87,7 @@ export const create = mutation({
     await saveMessage(ctx, components.agent, {
       threadId: conversation.threadId,
       // TODO: Check if "agentName" is needed or not
-      agentName: identiy.familyName,
+      agentName: identity.familyName,
       message: {
         role: "assistant",
         content: args.prompt,
@@ -118,16 +102,16 @@ export const getMany = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
-    const identiy = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity();
 
-    if (identiy === null) {
+    if (identity === null) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
         message: "Identity not found",
       });
     }
 
-    const orgId = identiy.orgId as string;
+    const orgId = identity.orgId as string;
 
     if (!orgId) {
       throw new ConvexError({
