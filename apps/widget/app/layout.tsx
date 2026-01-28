@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}>
         <Providers>
-          {children}
+          <div className="w-screen h-screen">{children}</div>
 
           <Toaster />
         </Providers>
