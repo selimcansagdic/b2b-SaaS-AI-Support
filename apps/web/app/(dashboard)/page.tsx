@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
